@@ -1,0 +1,253 @@
+
+.gametables{
+	margin-top: 5%;
+	text-align: center;
+}
+
+.text-center{
+	margin-left: 4%;
+}
+
+.ally{
+	background-color: transparent;
+	margin-right: 2%;
+}
+
+.containerButton{
+	height: 200px;
+	position: relative;
+}
+.centerButton{
+	margin: 0;
+	position: absolute;
+	left: 51.7%;
+	-ms-transform: translateX(-50%);
+  	transform: translateX(-50%);
+}
+
+.placeBattleship{
+	width: 100%;
+	margin-top: 20px;
+	font-size: 20px;
+	color: white;
+	padding: 5px;
+	font-family: Arial, cursive, sans-serif;
+	font-weight: 600;
+	border-radius: 4px;
+	background-color: #202020;
+	border: 2px solid black;
+
+}
+
+.placeBattleship:hover{
+	background-color: white;
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+	color: black;
+	border: 2px solid black;
+}
+
+.placeBattleship:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(2px);
+}
+
+.button:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
+}
+
+#enemy td{
+	cursor: context-menu;
+}
+
+table{
+	border-collapse: collapse;
+	display: inline-block;
+}
+
+td{
+	border: 2px solid white;
+	height: 62px;
+	width: 62px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 14px;
+	cursor: pointer;
+	background-color: transparent;
+	border-style: solid;
+	color: white;
+}
+
+.mapColumn{
+	cursor: context-menu;
+	color: 	white;
+	-webkit-text-stroke: 2px black;
+	background-color: transparent;
+	border: none;
+	font-weight: 600;
+	font-size: 29px;
+	font-family: Tahoma, Helvetica, cursive;
+}
+
+body{
+	background-image: url("ship_ps.jpg");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	background-color: black;
+	background-size: 100vw 100vh;
+}
+
+.navbar {
+  width: 100%;
+  height: 5%;
+}
+
+.navbar-custom{
+	background-color: #181818;
+}
+
+.nav-item{
+	cursor: pointer;
+}
+
+.cellAlly .tooltiptext {
+	visibility: hidden;
+	width: 65px;
+	background-color: black;
+	color: #fff;
+	padding: 3px 0;
+	margin-left: -1.7%;
+	margin-top: -1.7%;
+	border-radius: 5px;
+	position: absolute;
+}
+
+.cellAlly:hover .tooltiptext {
+	visibility: visible;
+}
+
+.cellEnemy .tooltiptext {
+	visibility: hidden;
+	width: 65px;
+	background-color: black;
+	color: #fff;
+	padding: 3px 0;
+	margin-left: -1.7%;
+	margin-top: -1.7%;
+	border-radius: 5px;
+	position: absolute;
+}
+
+.cellEnemy:hover .tooltiptext {
+	visibility: visible;
+}
+
+.popup .overlay{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 1;
+	display: none;
+}
+
+.popup .content{
+	overflow-y: scroll;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0);
+	background: #FFF;
+	width: 60%;
+	height: 90%;
+	z-index: 2;
+	text-align: center;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.popup .close-button{
+	cursor: pointer;
+	position: sticky;
+	left: 96%;
+	top: 10px;
+	width: 30px;
+	height: 30px;
+	background: #222;
+	color: #FFF;
+	font-size: 25px;
+	font-weight: 600;
+	line-height: 24px;
+	text-align: center;
+	border-radius: 50%;
+}
+
+.popup.active .overlay{
+	display: block;
+}
+
+.popup.active .content{
+	transition: all 300ms ease-in-out;
+	transform: translate(-50%, -50%) scale(1);
+}
+
+.table td{
+	cursor: context-menu;
+	color: black;
+	width: 1000px;
+}
+
+.gameRulesImages{
+	text-align: center;
+	max-width: 100%;
+	width: 24.5%;
+	height: auto;
+}
+
+.centeredImages{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn{
+	background-color: black;
+	color: white;
+}
+
+.btn:hover{
+	background-color: white;
+	color: black;
+}
+
+.winner .popup .content{
+	width: 40%;
+	height: 35%;
+}
+
+.loser .popup .content{
+	overflow-y: hidden; 
+	width: 40%;
+	height: 30%;
+}
+
+.carousel-indicators li {
+	background-color: black;
+  	width: 10px;
+ 	height: 10px;
+  	border-radius: 100%;
+}
+
+.carousel-control-prev-icon {
+ 	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5L4.25 4l2.5-2.5L5.25 0z'/%3e%3c/svg%3e");
+}
+      
+.carousel-control-next-icon {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5L3.75 4l-2.5 2.5L2.75 8l4-4-4-4z'/%3e%3c/svg%3e");
+ }
