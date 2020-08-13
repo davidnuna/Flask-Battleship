@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="#">
+	<title>
+		Battleship Game
+	</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+	  	<div class="navbar-nav">
+	      <a class="nav-item nav-link" href="#" onclick="resetGame()">Reset Game<span class="sr-only">(current)</span></a>
+	      <a class="nav-item nav-link" onclick="toggleGameRules()">Game Rules</a>
+	      <a class="nav-item nav-link" onclick="toggleHighScores()">High Scores</a>
+	    </div>
+	  </div>
+	</nav>
+
+	<div class="gametables">
+  		<table class="ally" id="ally">
+  			<tr class="mapColumn">
+  				<td class="mapColumn">
+  				{% for itemCol in column:  %}
+					<td class="mapColumn">{{ itemCol }}</td>
+				{% endfor %}
+			</tr>
+  			{% for itemRow in row: %}
+			  <tr>
+			  	<td class="mapColumn">{{ itemRow }}</td>
+			  	{% for itemCol in column:  %}
+					<td class="cellAlly" id="ally{{ itemCol }}{{ itemRow }}"><span class="tooltiptext">{{ itemCol }} {{ itemRow }}</span></td>
+				{% endfor %}
+			  </tr>
+		  	{% endfor %}
+		</table>
+
+  		<table class="enemy" id="enemy">
+  			 <tr class="mapColumn">
+  			 	<td class="mapColumn">
+  				{% for itemCol in column:  %}
+					<td class="mapColumn">{{ itemCol }}</td>
+				{% endfor %}
+			</tr>
+  			{% for itemRow in row: %}
+			  <tr>
+			  	<td class="mapColumn">{{ itemRow }}</td>
+			  	{% for itemCol in column:  %}
+					<td class="cellEnemy" id="enemy{{ itemCol }}{{ itemRow }}"><span class="tooltiptext">{{ itemCol }} {{ itemRow }}</span></td>
+				{% endfor %}
+			  </tr>
+		  	{% endfor %}
+		</table>
+	</div>
+
+	<div class="containerButton">
+		<div class="centerButton">
+			<button class="placeBattleship" onclick="placeBattleship()">PLACE BATTLESHIP</button>
+		</div>
+	</div>
+
+	<div class="popup" id="popup-1">
+		<div class="overlay" onclick="toggleGameRules()"></div>
+			<div class="content">
+				<div class="close-button" onclick="toggleGameRules()">&times;</div>
+				<h1> Game Rules </h1>
+				<p> The game is played on a 8x8 grid, following the well-known paper game "battleship". The first grid is yours, whilst the second one is the enemy's! </p>
+				<p> There are 2 phases covering the development of the game: The placing-phase and the attack-phase: </p>
+				<h2> The Placing-Phase </h2>
+				<p> You must place exactly 3 unique battleships (horizontally or vertically): a Destroyer (2 squares), a Cruiser (3 squares) and a Battleship (4 squares). </p>
+				<p> In order to place any of these ships, simply click on your desired squares and after you are done press the "Place Battleship" button (you must place the battleships one by one, so you have to press the button after every ship placement).</p>
+				<div class = "centeredImages">
+					<img class = "gameRulesImages" src="{{ url_for('static', filename='styles/first_mod.png') }}">
+					<img class = "gameRulesImages" src="{{ url_for('static', filename='styles/second_mod.png') }}">
+					<img class = "gameRulesImages" src="{{ url_for('static', filename='styles/third_mod.png') }}">
+					<img class = "gameRulesImages" src="{{ url_for('static', filename='styles/fourth_mod.png') }}">
+				</div>
+				<p> After you're done placing all your ships, the attack phase begins. </p>
+				<h2> The Attack-Phase </h2>
+				<p> The goal is simple: destroy the enemy's fleet before he sinks yours. All you have to do is click the square on the enemy's grid where you reckon an enemy battleship might be located, whilst the enemy will do the same. If you manage to hit a battleship, the square will turn red, otherwise it will turn white. </p>
+				<p> If you manage to succeed, you can register your score (the number of times you attacked before you managed to sink the enemy fleet) by entering your name in the appearing area.</p>
+		</div>
+	</div>
+	<div class="popup" id="popup-2">
+		<div class="overlay" onclick="toggleHighScores()"></div>
+			<div class="content">
+				<div class="close-button" onclick="toggleHighScores()">&times;</div>
+				<h1> High Scores </h1>
+				<p> Note: only the first 50 records are shown! </p>
+
+				<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+				  <ol class="carousel-indicators">
+				  		<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+					    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+						<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+					    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+					    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+				  </ol>
+				  <div class="carousel-inner">
+						    <div class="carousel-item active">
+						      	<div class="row justify-content-center">
+						    		<div class="col-auto">
+										<table class="table table-striped">
+										  <thead>
+										    <tr>
+										      <th scope="col">ID</th>
+										      <th scope="col">Name</th>
+										      <th scope="col">Moves</th>
+										      <th scope="col">Date</th>
+										    </tr>
+										  </thead>
+										  <tbody>
+										  	{% for item in highscores[0:10]: %}
+										  		<tr>
+										  			<th scope="row">{{ loop.index }}</th>
+										  			<td> {{item.name}} </td>
+										  			<td> {{item.score}} </td>
+										  			<td> {{item.date}} </td>
+										  		</tr>
+											{% endfor %}
+											{% for value in range((highscores|length), 10): %}
+												<tr>
+										  			<th scope="row">{{ loop.index + highscores|length }}</th>
+										  			<td></td>
+										  			<td></td>
+										  			<td></td>
+										  		</tr>
+											{% endfor %}
+										  </tbody>
+										</table>
+									</div>
+								</div>
+						    </div>
+
+						    <div class="carousel-item">
+						      	<div class="row justify-content-center">
+						    		<div class="col-auto">
+										<table class="table table-striped">
+										  <thead>
+										    <tr>
+										      <th scope="col">ID</th>
+										      <th scope="col">Name</th>
+										      <th scope="col">Steps</th>
+										      <th scope="col">Date</th>
+										    </tr>
+										  </thead>
+										  <tbody>
+										  	{% for item in highscores[10:20]: %}
+										  		<tr>
+										  			<th scope="row">{{ loop.index + 10}}</th>
+										  			<td> {{item.name}} </td>
+										  			<td> {{item.score}} </td>
+										  			<td> {{item.date}} </td>
+										  		</tr>
+											{% endfor %}
+											{% for value in range((highscores[10:20]|length) + 10, 20): %}
+												<tr>
+										  			<th scope="row">{{ loop.index + highscores[10:20]|length + 10 }}</th>
+										  			<td></td>
+										  			<td></td>
+										  			<td></td>
+										  		</tr>
+											{% endfor %}
+										  </tbody>
+										</table>
+									</div>
+								</div>
+						    </div>
+
+						    <div class="carousel-item">
+						      	<div class="row justify-content-center">
+						    		<div class="col-auto">
+										<table class="table table-striped">
+										  <thead>
+										    <tr>
+										      <th scope="col">ID</th>
+										      <th scope="col">Name</th>
+										      <th scope="col">Steps</th>
+										      <th scope="col">Date</th>
+										    </tr>
+										  </thead>
+										  <tbody>
+										  	{% for item in highscores[20:30]: %}
+										  		<tr>
+										  			<th scope="row">{{ loop.index + 20}}</th>
+										  			<td> {{item.name}} </td>
+										  			<td> {{item.score}} </td>
+										  			<td> {{item.date}} </td>
+										  		</tr>
+											{% endfor %}
+											{% for value in range((highscores[20:30]|length) + 20, 30): %}
+												<tr>
+										  			<th scope="row">{{ loop.index + highscores[20:30]|length + 20 }}</th>
+										  			<td></td>
+										  			<td></td>
+										  			<td></td>
+										  		</tr>
+											{% endfor %}
+										  </tbody>
+										</table>
+									</div>
+								</div>
+						    </div>
+
+						    <div class="carousel-item">
+						      	<div class="row justify-content-center">
+						    		<div class="col-auto">
+										<table class="table table-striped">
+										  <thead>
+										    <tr>
+										      <th scope="col">ID</th>
+										      <th scope="col">Name</th>
+										      <th scope="col">Steps</th>
+										      <th scope="col">Date</th>
+										    </tr>
+										  </thead>
+										  <tbody>
+										  	{% for item in highscores[30:40]: %}
+										  		<tr>
+										  			<th scope="row">{{ loop.index + 30}}</th>
+										  			<td> {{item.name}} </td>
+										  			<td> {{item.score}} </td>
+										  			<td> {{item.date}} </td>
+										  		</tr>
+											{% endfor %}
+											{% for value in range((highscores[30:40]|length) + 30, 40): %}
+												<tr>
+										  			<th scope="row">{{ loop.index + highscores[30:40]|length + 30 }}</th>
+										  			<td></td>
+										  			<td></td>
+										  			<td></td>
+										  		</tr>
+											{% endfor %}
+										  </tbody>
+										</table>
+									</div>
+								</div>
+						    </div>
+
+						    <div class="carousel-item">
+						      	<div class="row justify-content-center">
+						    		<div class="col-auto">
+										<table class="table table-striped">
+										  <thead>
+										    <tr>
+										      <th scope="col">ID</th>
+										      <th scope="col">Name</th>
+										      <th scope="col">Steps</th>
+										      <th scope="col">Date</th>
+										    </tr>
+										  </thead>
+										  <tbody>
+										  	{% for item in highscores[40:50]: %}
+										  		<tr>
+										  			<th scope="row">{{ loop.index + 40}}</th>
+										  			<td> {{item.name}} </td>
+										  			<td> {{item.score}} </td>
+										  			<td> {{item.date}} </td>
+										  		</tr>
+											{% endfor %}
+											{% for value in range((highscores[40:50]|length) + 40, 50): %}
+												<tr>
+										  			<th scope="row">{{ loop.index + highscores[40:50]|length + 40 }}</th>
+										  			<td></td>
+										  			<td></td>
+										  			<td></td>
+										  		</tr>
+											{% endfor %}
+										  </tbody>
+										</table>
+									</div>
+								</div>
+						    </div>
+				  </div>
+				  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				    <span class="sr-only">Previous</span>
+				  </a>
+				  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+				    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				    <span class="sr-only">Next</span>
+				  </a>
+				</div>
+				
+		</div>
+	</div>
+
+	<div class="winner">
+		<div class="popup" id="popup-3">
+			<div class="overlay" onclick="toggleWonGame()"></div>
+				<div class="content">
+					<div class="close-button" onclick="toggleWonGame()">&times;</div>
+					<p id="steps"></p>
+					<p> You can record your performance by inputting your name below: </p> 
+					<form action="#" method="POST">
+					  <div class="form-group">
+					    <label for="nameRecord">Name</label>
+					    <input type="text" class="form-control" id="inputText" name="name" placeholder="Enter your name">
+					  </div>
+					  <button type="submit" class="btn" onclick="toggleWonGame()">Submit</button>
+					</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="loser">
+		<div class="popup" id="popup-4">
+			<div class="overlay"></div>
+				<div class="content">
+					<div class="close-button" onclick="toggleLostGame()">&times;</div>
+					<p> Game Over! You lost! Your fleet has been completely annihilated!</p>
+					<p> You can now see the enemy's remaining battleships, better luck next time! </p>
+					<p> Press the "Reset Game" button in the top-left corner or refresh the page to play again! </p> 
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+	</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+	</script>
+		
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+	</script>
+
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+</body>
+</html>
