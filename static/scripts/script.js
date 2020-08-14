@@ -187,7 +187,7 @@ function toggleLostGame(){
 		while(data.remaining.length){
 			let element = data.remaining.shift()
 			$("#enemy"+element).css("background-color", "rgb(205, 92, 92)");
-			#console.log(element);
+			//console.log(element);
 		}
 	});
 }
